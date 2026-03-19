@@ -109,14 +109,77 @@ response = ollama.chat(model="llama3.2", messages=[
 print(response["message"]["content"])
 ```
 
-## 권장 모델
+## 모델 검색
 
-| 모델 | 크기 | 용도 |
-|------|------|------|
-| `llama3.2:1b` | ~1.3GB | 가벼운 테스트, 저사양 PC |
-| `llama3.2:3b` | ~2GB | 범용 대화 |
-| `gemma3:4b` | ~3GB | 범용 대화 |
-| `qwen2.5-coder:7b` | ~4.7GB | 코드 생성/분석 |
-| `llama3.3:70b` | ~43GB | 고성능 (RAM 64GB 이상 권장) |
+전체 모델 목록은 [ollama.com/library](https://ollama.com/library) 에서 확인할 수 있다.
+
+```bash
+# CLI에서 모델 검색
+ollama search llama
+```
+
+## 주요 모델 목록
+
+| 모델 | 다운로드 명령어 | 크기 | 특징 |
+|------|-----------------|------|------|
+| Llama 3.2 | `ollama pull llama3.2` | ~2GB | Meta, 범용 경량 |
+| Llama 3.3 | `ollama pull llama3.3` | ~43GB | Meta, 고성능 |
+| DeepSeek R1 | `ollama pull deepseek-r1` | ~4.7GB | 추론/사고 특화 |
+| Gemma 3 | `ollama pull gemma3` | ~3GB | Google, 범용 |
+| Qwen 2.5 Coder | `ollama pull qwen2.5-coder` | ~4.7GB | 코딩 특화 |
+| Mistral | `ollama pull mistral` | ~4.1GB | 범용 |
+| Phi-4 | `ollama pull phi4` | ~9.1GB | Microsoft, 추론 |
+| CodeLlama | `ollama pull codellama` | ~3.8GB | 코드 생성 |
+
+크기는 기본(default) 태그 기준이며, `:1b`, `:7b`, `:70b` 같은 태그로 다른 크기도 선택 가능하다.
 
 > **참고**: 모델 크기가 클수록 성능이 좋지만, 그만큼 RAM과 디스크 공간이 필요하다. Apple Silicon Mac에서는 통합 메모리 덕분에 비교적 큰 모델도 원활하게 실행 가능하다.
+
+## AI Agent 실습용 추천 모델
+
+AI Agent는 **코드 생성 + 함수 호출(tool use) + JSON 형식 응답** 능력이 중요하다. 노트북 RAM에 맞춰 모델을 선택한다.
+
+### RAM별 추천
+
+| RAM | 모델 | 명령어 | 용도 |
+|-----|------|--------|------|
+| 8GB | `llama3.2:3b` | `ollama pull llama3.2` | 범용 경량 |
+| 16GB | `qwen2.5-coder:7b` | `ollama pull qwen2.5-coder:7b` | 코딩/Agent |
+| 16GB | `deepseek-r1:8b` | `ollama pull deepseek-r1:8b` | 추론/사고 |
+| 32GB+ | `qwen2.5-coder:14b` | `ollama pull qwen2.5-coder:14b` | 코딩/Agent 고성능 |
+
+### RAM 확인 방법
+
+```bash
+# macOS
+sysctl -n hw.memorysize | awk '{print $1/1024/1024/1024 "GB"}'
+
+# Windows (PowerShell)
+(Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB
+```
+
+### 실습용 추천 조합
+
+7b~14b 모델이면 기본적인 Agent 실습에 충분하다. 두 가지를 받아두면 용도별로 활용할 수 있다.
+
+```bash
+# 코딩/Agent용
+ollama pull qwen2.5-coder:7b
+
+# 범용 대화/추론용
+ollama pull llama3.2
+```
+
+## 모델 저장 경로
+
+Ollama 앱과 모델 파일은 별도로 저장된다. 앱을 삭제해도 모델은 남아있다.
+
+- **macOS**: `~/.ollama/models/`
+- **Linux**: `~/.ollama/models/`
+- **Windows**: `C:\Users\<사용자>\.ollama\models\`
+
+모델을 포함해 전부 삭제하려면:
+
+```bash
+rm -rf ~/.ollama
+```
