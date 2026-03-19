@@ -15,3 +15,4 @@
 | 5 | [uv (Python 패키지 매니저)](docs/uv.md) | 초고속 Python 패키지 매니저 |
 | 6 | [VS Code 확장 프로그램](docs/vscode-extensions.md) | 권장 VS Code 확장 프로그램 |
 | 7 | [Ollama 설치](docs/ollama.md) | 로컬 LLM 실행 환경 |
+| 8 | [Docker Desktop 설치](docs/docker.md) | 컨테이너 기반 개발 환경 |
