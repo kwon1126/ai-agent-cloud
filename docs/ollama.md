@@ -16,13 +16,25 @@
 
 ### macOS
 
-```bash
-# Homebrew를 이용한 설치
-brew install ollama
+macOS에서는 다음 세 가지 방법 중 하나를 선택해 설치할 수 있습니다.
 
-# 또는 공식 사이트에서 직접 다운로드
-# https://ollama.com/download
+**방법 1: 터미널 명령어 (공식 설치 스크립트)**
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
 ```
+
+**방법 2: Homebrew 이용**
+Homebrew가 설치되어 있지 않다면 먼저 터미널에서 아래 명령어로 설치합니다.
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+이후 아래 명령어로 Ollama를 설치합니다.
+```bash
+brew install ollama
+```
+
+**방법 3: 직접 다운로드**
+[https://ollama.com/download](https://ollama.com/download) 에서 패키지를 받아 직접 설치합니다.
 
 ### Windows
 
