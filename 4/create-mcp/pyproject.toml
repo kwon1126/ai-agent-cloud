@@ -1,0 +1,9 @@
+[project]
+name = "create-mcp"
+version = "0.1.0"
+description = "Simple MCP server with file system tools"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastmcp>=2.0.0",
+]
