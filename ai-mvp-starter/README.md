@@ -13,6 +13,8 @@
 
 ## 10분 세팅 가이드
 
+> **처음 사용하신다면 [Supabase 연결 상세 가이드](./docs/supabase-setup.md)를 따라 진행하세요** — 스크린샷 없이 글만으로 따라할 수 있도록 단계별로 정리되어 있습니다.
+
 ### 1. Supabase 프로젝트 생성
 [supabase.com](https://supabase.com) → New Project 생성 후:
 - Project Settings → API: `Project URL`, `anon public` 키, `service_role` 키 복사
