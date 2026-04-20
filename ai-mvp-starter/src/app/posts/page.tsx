@@ -44,7 +44,10 @@ export default async function PostsPage() {
         <ul className="divide-y">
           {list.map((post) => (
             <li key={post.id} className="py-4">
-              <Link href={`/posts/${post.id}`} className="block hover:bg-gray-50">
+              <Link
+                href={`/posts/${post.id}`}
+                className="block hover:bg-gray-50"
+              >
                 <h2 className="font-medium">{post.title}</h2>
                 <p className="mt-1 text-sm text-gray-500">
                   {post.author?.name ?? "익명"} ·{" "}
