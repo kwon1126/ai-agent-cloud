@@ -12,16 +12,13 @@ export default async function HomePage() {
         Next.js + Supabase + Drizzle 풀스택 템플릿
       </p>
 
-      <div className="mt-8 flex gap-3">
-        <Link href="/posts">
-          <Button>게시글 보기</Button>
-        </Link>
-        {!user && (
+      {!user && (
+        <div className="mt-8">
           <Link href="/login">
-            <Button variant="outline">로그인</Button>
+            <Button>로그인</Button>
           </Link>
-        )}
-      </div>
+        </div>
+      )}
     </main>
   );
 }

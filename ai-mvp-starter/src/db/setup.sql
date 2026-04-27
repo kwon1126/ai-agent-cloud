@@ -7,7 +7,6 @@
 -- Service Role Key를 사용하는 서버만 접근 가능.
 -- anon key(브라우저)로는 아무것도 못 읽음.
 alter table users enable row level security;
-alter table posts enable row level security;
 
 -- ================================================================
 -- Supabase Auth → users 테이블 자동 동기화 트리거
