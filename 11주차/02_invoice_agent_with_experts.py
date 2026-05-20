@@ -130,7 +130,20 @@ def classify_expense(invoice_data: dict) -> dict:
     # 힌트: "기업 재무 지출 분류 전문가로서 행동하라" 로 시작하세요
     # 힌트: 인보이스 정보 (vendor, total_amount, line_items)를 포함하세요
     # 힌트: 카테고리 목록(EXPENSE_CATEGORIES)을 알려주세요
-    prompt = ""  # TODO: 여기를 채우세요
+    prompt = f"""기업 재무 지출 분류 전문가로서 행동하라.
+당신은 10년 이상의 기업 회계 경험을 가진 전문가로, 인보이스를 보고 지출 카테고리를 정확히 분류하는 것이 임무입니다.
+
+아래 인보이스 정보를 분석하고 가장 적합한 지출 카테고리를 선택하세요.
+
+인보이스 정보:
+- 공급업체: {invoice_data.get('vendor', {}).get('name', '알 수 없음')}
+- 총 금액: {invoice_data.get('total_amount', 0):,}원
+- 품목 목록:
+{items_desc}
+
+사용 가능한 카테고리: {', '.join(EXPENSE_CATEGORIES)}
+
+각 품목의 성격을 고려하여 전체 인보이스의 주요 카테고리를 하나 선택하고, 분류 신뢰도(높음/중간/낮음)와 그 이유를 설명하세요."""
 
     return prompt_llm_for_json(schema, prompt)
 
@@ -165,7 +178,28 @@ def check_compliance(invoice_data: dict) -> dict:
     # 힌트: "구매 규칙 준수 전문가로서 행동하라" 로 시작하세요
     # 힌트: purchasing_rules를 <purchasing_rules> 태그 안에 넣으세요
     # 힌트: 인보이스 정보를 함께 넣으세요
-    prompt = ""  # TODO: 여기를 채우세요
+    line_items_desc = "\n".join(
+        f"  - {item.get('description', '')}: {item.get('total', 0):,}원"
+        for item in invoice_data.get("line_items", [])
+    )
+    prompt = f"""구매 규칙 준수 전문가로서 행동하라.
+당신은 기업 구매 정책 및 컴플라이언스 전문가로, 인보이스가 회사의 구매 규칙을 준수하는지 검토하는 것이 임무입니다.
+
+<purchasing_rules>
+{purchasing_rules}
+</purchasing_rules>
+
+아래 인보이스 정보를 위의 구매 규칙과 대조하여 준수 여부를 판단하세요:
+
+인보이스 정보:
+- 인보이스 번호: {invoice_data.get('invoice_number', '알 수 없음')}
+- 공급업체: {invoice_data.get('vendor', {}).get('name', '알 수 없음')}
+- 총 금액: {invoice_data.get('total_amount', 0):,}원
+- 발행일: {invoice_data.get('date', '알 수 없음')}
+- 품목 목록:
+{line_items_desc}
+
+위반 사항이 있으면 구체적으로 명시하고, 필요한 승인 절차나 조치 사항을 권고하세요."""
 
     return prompt_llm_for_json(schema, prompt)
 

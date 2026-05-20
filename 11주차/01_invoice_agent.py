@@ -54,8 +54,14 @@ def prompt_llm_for_json(schema: dict, prompt: str) -> dict:
         try:
             # TODO: ollama.chat()을 호출해서 LLM 응답을 받으세요
             # 힌트: model=MODEL, messages에 system_message와 prompt를 넣어야 합니다
-            response = None  # TODO: 여기를 채우세요
-            text = ""        # TODO: response에서 텍스트를 꺼내세요
+            response = ollama.chat(
+                model=MODEL,
+                messages=[
+                    {"role": "system", "content": system_message},
+                    {"role": "user", "content": prompt},
+                ]
+            )
+            text = response.message.content
 
             # 마크다운 코드블록 제거 (이 부분은 완성되어 있습니다)
             if "```json" in text:
@@ -88,11 +94,33 @@ def extract_invoice_data(document_text: str) -> dict:
     # 힌트: 인보이스 번호, 날짜, 금액은 필수입니다
     invoice_schema = {
         "type": "object",
-        "required": [],  # TODO: 필수 필드를 넣으세요
+        "required": ["invoice_number", "date", "total_amount"],
         "properties": {
-            # TODO: 필요한 필드를 추가하세요
-            # 예시:
-            # "invoice_number": {"type": "string", "description": "인보이스 번호"},
+            "invoice_number": {"type": "string", "description": "인보이스 번호"},
+            "date": {"type": "string", "description": "발행일 (YYYY-MM-DD 형식)"},
+            "vendor": {
+                "type": "object",
+                "description": "공급업체 정보",
+                "properties": {
+                    "name": {"type": "string", "description": "공급업체명"},
+                    "address": {"type": "string", "description": "주소"},
+                }
+            },
+            "total_amount": {"type": "number", "description": "총 금액 (숫자만, 통화 기호 제외)"},
+            "currency": {"type": "string", "description": "통화 코드 (예: KRW, USD)"},
+            "line_items": {
+                "type": "array",
+                "description": "품목 목록",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "description": {"type": "string", "description": "품목명"},
+                        "quantity": {"type": "number", "description": "수량"},
+                        "unit_price": {"type": "number", "description": "단가"},
+                        "total": {"type": "number", "description": "소계"},
+                    }
+                }
+            }
         }
     }
 
